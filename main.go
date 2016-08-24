@@ -1,13 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"time"
+	"net"
+
+	"github.com/namely/accounts/server"
+	pb "github.com/therealplato/muid-demo/protoheaders"
+	"google.golang.org/grpc"
 )
 
 func main() {
-	for {
-		time.Sleep(2 * time.Second)
-		fmt.Println("vim-go")
+	lis, err := net.Listen("tcp", s.cfg.ListenAddress)
+	if err != nil {
+		panic(err)
 	}
+
+	s := server.New()
+	gs := grpc.NewServer()
+	pb.RegisterMuidServer(gs, s)
+	<-grpc.Serve(lis)
 }

@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package muid;
+
+message Error {
+  string key = 1;
+  string message = 2;
+}
+
+message Muid {
+  bytes muid = 1;
+}
+
+message GenerateOneReq {
+  int32 sizeBytes = 1;
+  int32 sizeTimestamp = 2;
+}
+
+message GenerateOneResp {
+  oneof resp {
+    Muid muid = 1;
+    Error error = 2;
+  }
+}
+
+service MuidGenerator {
+  rpc GenerateOne (GenerateOneReq) returns (GenerateOneResp) {};
+  /* rpc GenerateMany (GenerateManyReq) returns (GenerateManyResp) {}; */
+}
+
