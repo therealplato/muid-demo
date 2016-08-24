@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: muid-generator
+  namespace: muid-demo
+  labels:
+    name: muid-generator
+    component: generator
+spec:
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        name: muid-generator
+        component: generator
+    spec:
+      containers:
+      - name: accounts
+        image: "muid-demo:0.1.0"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 50051
+          protocol: TCP
+        resources:
+          requests:
+            memory: "64Mi"
+          limits:
+            memory: "1200Mi"
+        env:
+        - name: LISTEN_ADDRESS
+          value: "0.0.0.0:50051"
+        readinessProbe:
+          tcpSocket:
+            port: 50051
+          initialDelaySeconds: 3
+          timeoutSeconds: 1
+          periodSeconds: 15
+          failureThreshold: 2
